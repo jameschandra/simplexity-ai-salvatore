@@ -12,6 +12,8 @@ from typing import Tuple, List
 
 class Minimax:
     def __init__(self):
+        self.scores = []
+        self.moves = []
         self.best_score = 0
         self.best_move = None
         self.thinking_time = 3
@@ -52,6 +54,9 @@ class Minimax:
                 best_val = max(best_val, value)
 
                 if best_val >= self.best_score:
+                    self.scores.append(best_val)
+                    self.moves.append(move)
+                    self.best_score = best_val
                     self.best_move = move
 
                 alpha = max(alpha, best_val)
@@ -91,5 +96,15 @@ class Minimax:
         self.thinking_time = time() + thinking_time
 
         self.minimax(state, n_player, 0, True, -999, 999)
-        print(self.best_move)
-        return self.best_move
+
+        available_moves = []
+
+        for i in range(len(self.scores)):
+            if (self.scores[i] == self.best_score):
+                available_moves.append(self.moves[i])
+        
+        selected_move = available_moves[random.randint(0, len(available_moves))]
+
+        print(self.best_score)
+        print(selected_move)
+        return selected_move
