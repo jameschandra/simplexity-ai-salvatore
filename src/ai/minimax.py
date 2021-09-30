@@ -5,7 +5,7 @@ from time import time
 from src.constant import ShapeConstant
 from src.model import State
 
-from src.utility import place
+from src.utility import place, is_win
 from src.ai.function import utility_function, get_all_available_moves
 
 from typing import Tuple, List
@@ -22,6 +22,12 @@ class Minimax:
     def minimax(self, state: State, n_player: int, depth: int, isMaximizingPlayer: bool, alpha: int, beta: int):
 
         # Cek terminal state dengan is win dll
+        winner = is_win(state.board)
+        if winner and winner[0] == state.players[n_player].shape and winner[1] == state.players[n_player].color:
+            return 99999999
+        
+        if winner and winner[0] != state.players[n_player].shape and winner[1] != state.players[n_player].color:
+            return -99999999
 
         if (depth == self.max_depth - 1):
             max_value = 0
@@ -103,7 +109,7 @@ class Minimax:
             if (self.scores[i] == self.best_score):
                 available_moves.append(self.moves[i])
         
-        selected_move = available_moves[random.randint(0, len(available_moves))]
+        selected_move = available_moves[random.randint(0, len(available_moves)-1)]
 
         print(self.best_score)
         print(selected_move)

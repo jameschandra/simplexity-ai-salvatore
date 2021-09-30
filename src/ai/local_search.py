@@ -10,16 +10,15 @@ from typing import Tuple, List
 
 class LocalSearch:
     def __init__(self):
+        self.max_temp = 50
+        self.remaining_time_threshold = 0.01
+        self.thinking_time = 3
         pass
 
-    def schedule(self, current_thinking_time_elapsed):
-        max_thinking_time = 3
-        max_temp = 50
-        remaining_time_threshold = 0.001
-        if (max_thinking_time - current_thinking_time_elapsed) < remaining_time_threshold:
+    def schedule(self, current_thinking_time_elapsed): 
+        if (self.thinking_time - current_thinking_time_elapsed) < self.remaining_time_threshold:
             return 0
-        
-        return max_temp * (max_thinking_time - current_thinking_time_elapsed)
+        return self.max_temp * (self.thinking_time - current_thinking_time_elapsed)
 
     def generate_random(self, all_available_moves):
         move = random.choice(all_available_moves)
@@ -37,6 +36,8 @@ class LocalSearch:
             T = self.schedule(t)
             if T == 0:
                 return current_move
+            if (len(all_available_moves) == 0):
+                return current_move
             next_move = self.generate_random(all_available_moves)
             next_value = utility_function(state, n_player, next_move[0], next_move[1])
             E = next_value - current_value
@@ -44,7 +45,7 @@ class LocalSearch:
                 current_move = next_move
                 current_value = next_value
             else:
-                X = 0.5
+                X = 0.75
                 if ((math.e ** E) / T) > X:
                     current_move = next_move
                     current_value = next_value   

@@ -15,7 +15,7 @@ def utility_function(state: State, n_player: int, col: int, shape: str):
     """
     
     # check current player
-    if n_player == 1:
+    if n_player == 0:
         player_shape, player_color = GameConstant.PLAYER1_SHAPE, GameConstant.PLAYER1_COLOR
         # enemy_shape, enemy_color = GameConstant.PLAYER2_SHAPE, GameConstant.PLAYER2_COLOR
     else:
@@ -23,6 +23,8 @@ def utility_function(state: State, n_player: int, col: int, shape: str):
         # enemy_shape, enemy_color = GameConstant.PLAYER1_SHAPE, GameConstant.PLAYER1_COLOR
 
     # Place current shape in the board
+
+    currQuota = state.players[n_player].quota[shape]
     selected_row = place(state, n_player, shape, col)
     
     streak_way = [(-1, 0), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]
@@ -57,6 +59,7 @@ def utility_function(state: State, n_player: int, col: int, shape: str):
         
     # Undo the move
     state.board.set_piece(selected_row, col, Piece(ShapeConstant.BLANK, ColorConstant.BLACK))
+    state.players[n_player].quota[shape] = currQuota
     
     return utility_value
 
@@ -65,13 +68,14 @@ def get_all_available_moves(state: State, n_player: int):
     Return all possible moves for n_player in list of tuples (col, shape)
     """
     available_moves = []
-    
     available_columns = []
+    
     for col in range(state.board.col):
         if (state.board[0,col].shape == ShapeConstant.BLANK):
             available_columns.append(col)
     
     available_shapes = []
+
     for shape in [ShapeConstant.CROSS, ShapeConstant.CIRCLE]:
         if (state.players[n_player].quota[shape] != 0):
             available_shapes.append(shape)
