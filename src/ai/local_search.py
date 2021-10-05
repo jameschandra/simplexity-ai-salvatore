@@ -12,7 +12,6 @@ class LocalSearch:
     def __init__(self):
         self.thinking_time = 3
         self.threshold_time = 0.1
-        pass
 
     # def schedule(self, current_thinking_time_elapsed): 
     #     if (self.thinking_time - current_thinking_time_elapsed) < self.remaining_time_threshold:
