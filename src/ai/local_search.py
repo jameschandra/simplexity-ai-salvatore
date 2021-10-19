@@ -1,3 +1,5 @@
+from src.utility import *
+
 import random
 import math
 from time import time
@@ -8,7 +10,7 @@ from src.ai.function import utility_function, get_all_available_moves
 
 from typing import Tuple, List
 
-class LocalSearch:
+class LocalSearchGroup6:
     def __init__(self):
         self.thinking_time = 3
         self.threshold_time = 0.1
@@ -38,29 +40,29 @@ class LocalSearch:
     #             current_value = next_value
     
     def find_highest_value_successor(self, state, n_player, all_successors):
-        successor = all_successors[0]
-        highest_value = utility_function(state, n_player, successor[0], successor[1])
+        successor_move = all_successors[0]
+        highest_value = utility_function(state, n_player, successor_move[0], successor_move[1])
         for i in range(1, len(all_successors)):
             next_value = utility_function(state, n_player, all_successors[i][0], all_successors[i][1])
             if (next_value > highest_value):
-                successor = all_successors[i]
+                successor_move = all_successors[i]
                 highest_value = next_value
-        return (successor, highest_value)
+        return (successor_move, highest_value)
     
 
     def hill_climbing(self, state: State, n_player: int):
         start_time = time()
         all_available_moves = get_all_available_moves(state, n_player)
-        current = self.generate_random(all_available_moves)
-        current_value = utility_function(state, n_player, current[0], current[1])
+        current_move = self.generate_random(all_available_moves)
+        current_value = utility_function(state, n_player, current_move[0], current_move[1])
         while True:
             t = time() - start_time
             if (t >= self.thinking_time - self.threshold_time):
-                return current
-            neighbor, neighbor_value = self.find_highest_value_successor(state, n_player, all_available_moves)
+                return current_move
+            neighbor_move, neighbor_value = self.find_highest_value_successor(state, n_player, all_available_moves)
             if (neighbor_value <= current_value):
-                return current
-            current = neighbor
+                return current_move
+            current_move = neighbor_move
             current_value = neighbor_value
 
     def find(self, state: State, n_player: int, thinking_time: float) -> Tuple[str, str]:

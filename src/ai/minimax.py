@@ -1,3 +1,5 @@
+from src.utility import *
+
 import random
 import copy
 from time import time
@@ -10,7 +12,7 @@ from src.ai.function import utility_function, get_all_available_moves
 
 from typing import Tuple, List
 
-class Minimax:
+class MinimaxGroup6:
     def __init__(self):
         self.max_depth = 5
         self.scores = []
@@ -120,6 +122,6 @@ class Minimax:
 
         selected_move = available_moves[random.randint(0, len(available_moves)-1)]
 
-        print(self.best_score)
-        print(selected_move)
+        # print(self.best_score)
+        # print(selected_move)
         return selected_move

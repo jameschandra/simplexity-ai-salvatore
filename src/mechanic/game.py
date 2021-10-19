@@ -1,7 +1,7 @@
 import pickle
 from time import time
 
-from src.ai import Minimax, LocalSearch
+from src.ai import *
 from src.model import Board, Player, State, Config
 from src.constant import ShapeConstant, GameConstant, Path
 from src.utility import is_out, is_win, is_full, place
@@ -44,8 +44,8 @@ class Game:
         if self.config.game_type == GameConstant.BVB:
             if not self.config.is_dump:
                 # You can change model used here
-                model1 = LocalSearch()
-                model2 = Minimax()
+                model1 = LocalSearchGroup6()
+                model2 = MinimaxGroup6()
             else:
                 # Don't change this
                 model1 = pickle.load(open(Path.BVB_P1, "rb"))
@@ -56,7 +56,7 @@ class Game:
         elif self.config.game_type == GameConstant.PVB:
             if not self.config.is_dump:
                 # You can change model used here
-                model = LocalSearch()
+                model = MinimaxGroup6()
             else:
                 # Don't change this
                 model = pickle.load(open(Path.PVB, "rb"))
